@@ -1,3 +1,4 @@
+import AuthButton from "@/components/auth/auth-button";
 import MobileNav from "@/components/dashboard/mobile-nav";
 import DashBoardNav from "@/components/dashboard/nav";
 import Link from "next/link";
@@ -12,11 +13,17 @@ export default function DashBoardLayout({
     <div>
         {/* header */}
         <header className="sticky top-0 z-40 border-b bg-background">
-            <div className="container flex items-center h-16 px-4">
+            <div className="flex items-center h-16 px-6">
                 <MobileNav />
-                <Link href="/">
-                    <h1 className="text-lg font-bold">AI Image Generator</h1>
-                </Link>
+                <div className="flex w-full">                
+                    <Link href="/">
+                        <h1 className="text-lg font-bold">AI Image Generator</h1>
+                    </Link>
+                    {/* 認証ボタンはデフォルトhidden。md以上で表示するようにする。（md以下はスライドメニュー内に表示するように変更 */}
+                    <div className="ml-auto hidden md:block">
+                        <AuthButton />
+                    </div>
+                </div>
             </div>
         </header>
 

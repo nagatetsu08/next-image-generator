@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import AuthButton from "../auth/auth-button";
 
 const DashBoardNav = () => {
 
@@ -26,6 +27,9 @@ const DashBoardNav = () => {
                 </Link>
             </Button>
         ))}
+        <div className="my-4 px-4 md:hidden">
+            <AuthButton />
+        </div>
     </nav>
   )
 }

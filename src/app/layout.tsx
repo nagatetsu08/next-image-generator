@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Noto_Sans_JP } from "next/font/google";
+import {
+  ClerkProvider,
+} from '@clerk/nextjs'
+
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
@@ -19,12 +23,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
-      <body
-        className={`${notoSansJP.className} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    // clerkの最新Verはサインアウト後の遷移先は以下のように指定する。（.envに定義しても効かない）
+    <ClerkProvider afterSignOutUrl="/dashboard">
+      <html lang="ja">
+        <body
+          className={`${notoSansJP.className} antialiased`}
+        >
+          {children}
+        </body>
+      </html>
+      </ClerkProvider>
   );
 }
