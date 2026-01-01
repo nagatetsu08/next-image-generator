@@ -1,6 +1,7 @@
 import MobileNav from "@/components/dashboard/mobile-nav";
 import DashBoardNav from "@/components/dashboard/nav";
 import Link from "next/link";
+import { Toaster } from 'sonner'
 
 export default function DashBoardLayout({
   children,
@@ -36,6 +37,7 @@ export default function DashBoardLayout({
             {/* pは全方位にpadding */}
             <main className="flex w-full flex-col overflow-hidden p-4">
                 {children}
+                <Toaster richColors closeButton />
             </main>
         </div>
     </div>

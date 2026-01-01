@@ -7,14 +7,50 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils";
 import { GenerateImageState } from "@/types/actions";
-import { Download, ImageIcon, Loader } from "lucide-react";
+import { Download, ImageIcon } from "lucide-react";
 import { useActionState } from "react"
 import LoadingSpiner from "../load-spiner";
+import { toast } from 'sonner'
 
 const ImageGenerator = () => {
 
   const initialState: GenerateImageState = {
     status: "idle"
+  }
+
+  const handleDownload = () => {
+
+    if(!state.imageUrl) {
+      return
+    }
+
+    try {
+      // javascriptを使ってブラウザ経由で画像をダウンロードできるようにするおまじない。
+      //　やることは、1.imageのblobオブジェクト生成。2.隠しリンク作成 3.bodyに追加して、リンククリック
+
+      // Blobオブジェクト生成
+      const base64Data = state.imageUrl.split(",")[1];
+      const blob = new Blob([Buffer.from(base64Data, "base64")], {type: "image/png"});
+      
+      // 隠しリンク生成
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url
+      link.download = `${state.keyword}.png`
+
+      document.body.appendChild(link);
+      link.click();
+
+      // 後処理（作成したオブジェクトやリンクを破棄（メモリリークを防ぐため））
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url)
+
+      toast.success("ダウンロード完了")
+
+    } catch(error) {
+      console.error(error)
+      toast.error("ダウンロードに失敗しました")
+    }
   }
 
   // ブラウザのリロードなしに即座に作成したイメージをプレビューしたいので、クライアントコンポーネントでないとだめ。
@@ -63,7 +99,11 @@ const ImageGenerator = () => {
               />
             </div>
           </div>
-          <Button className="w-full" variant={"secondary"}>
+          <Button 
+            className="w-full" 
+            variant={"secondary"} 
+            onClick={handleDownload}
+          >
             <Download className="mr-2" />
             ダウンロード
           </Button>
