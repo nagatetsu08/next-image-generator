@@ -1,0 +1,38 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "mysql"
+  relationMode = "prisma"
+}
+
+model User {
+  id                 String             @id @default(uuid())
+  ClerkId            String             @unique
+  email              String             @unique
+  stripCustomerId    String?            @unique
+  credits            Int                @default(5)
+  subscriptionStatus SubscriptionStatus @default(FREE)
+  created_at         DateTime           @default(now())
+  updated_at         DateTime           @default(now())
+  subscriptions      Subscription?
+}
+
+model Subscription {
+  id                     String   @id @default(uuid())
+  userId                 String   @unique
+  stripeSubscriptionId   String   @unique
+  stripePriceId          String
+  stripeCurrentPeriodEnd DateTime
+  created_at             DateTime @default(now())
+  updated_at             DateTime @default(now())
+  user                   User     @relation(fields: [userId], references: [id])
+}
+
+enum SubscriptionStatus {
+  FREE
+  BASIC
+  PRODUCTION
+}
