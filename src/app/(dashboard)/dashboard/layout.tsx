@@ -30,7 +30,7 @@ export default function DashBoardLayout({
         {/* sidebar and main */}
         {/* 画面がmd(横幅768px)以上になった時だけ、１列目を220px固定、残りを画面いっぱい（minmax(0,1fr)） */}
         {/* md:gap-6はグリッドアイテム間に隙間を作る（６で1.5remという意味） */}
-        <div className="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
+        <div className="md:grid md:grid-cols-[220px_minmax(0,1fr)] lg:grid-cols-[240px_minmax(0,1fr)]">
             {/* side-bar */}
             {/* h-[calc(100vh-4rem)はheaderの高さをサイドバーの高さからぬいている。
                 これによってスクロールが発生しないようにしている。 サイドバーは常にスクロールさせずに表示させたいのでこうしている。

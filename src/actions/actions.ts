@@ -4,10 +4,10 @@ import { decrementUserCredits, getUserCredits } from "@/lib/credit";
 import { GenerateImageState } from "@/types/actions";
 import { currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 
 // カスタムエラークラス
-class AuthError extends Error {}
 class CreditError extends Error {}
 
 export async function generateImage(
@@ -25,21 +25,25 @@ export async function generateImage(
           error: "キーワードを入力してください"
       }
   }
+  const user = await currentUser();
+
+  if(!user) {
+    return {
+      status: "error",
+      error: "ユーザ認証がされていません",
+    };
+  }
+
+  // redirect() は内部的に「エラー（NEXT_REDIRECTエラー）」を投げることで動作するため、catch ブロックでそのエラーを捕まえてしまうとリダイレクトが中断されます。
+  // redirect は、可能な限り try-catch ブロックの外（一番最後など）に記述するのがNext.jsのベストプラクティス
+  const credits = await getUserCredits();
+
+  if(!credits || credits < 1) {
+    redirect("/dashboard/plan?reason=insuficient_credits")
+  }
 
   try {
     
-    const user = await currentUser();
-
-    if(!user) {
-      throw new AuthError("ユーザー認証がされていません")
-    }
-
-    const credits = await getUserCredits();
-
-    if(!credits || credits <= 0) {
-      throw new CreditError("クレジットが不足しています");
-    }
-
     const response = await fetch(`${process.env.BASE_URL}/api/generate-image`, {
       method: "POST",
       headers: {
@@ -64,12 +68,6 @@ export async function generateImage(
     }
   } catch (error) {
     console.log(error)
-    if (error instanceof AuthError) {
-      return {
-        status: "error",
-        error: error.message,
-      };
-    }
     if (error instanceof CreditError) {
       return {
         status: "error",

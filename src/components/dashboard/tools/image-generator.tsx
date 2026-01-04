@@ -11,8 +11,13 @@ import { Download, ImageIcon } from "lucide-react";
 import { useActionState } from "react"
 import LoadingSpiner from "../load-spiner";
 import { toast } from 'sonner'
+import { useUser } from "@clerk/nextjs";
+import { SignInButton, SignedIn } from "@clerk/clerk-react";
 
 const ImageGenerator = () => {
+
+  // このようなHooksはクライアントコンポーネントでしか使えない
+  const { isSignedIn } = useUser();
 
   const initialState: GenerateImageState = {
     status: "idle"
@@ -72,19 +77,35 @@ const ImageGenerator = () => {
             />
           </div>
           {/* submitボタン */}
-          <Button 
-            disabled={pending} 
-            className={cn("w-full duration-200", pending && "bg-primary/80")}
-          >
-            {pending ? (
-              <LoadingSpiner />
-            ) : ( 
-            <>
-              <ImageIcon className="mr-2" />
-              画像を生成する
-            </>
-            )}
-          </Button>
+          {isSignedIn ? 
+            (
+              <Button 
+                disabled={pending} 
+                className={cn("w-full duration-200", pending && "bg-primary/80")}
+              >
+                {pending ? (
+                  <LoadingSpiner />
+                ) : ( 
+                <>
+                  <ImageIcon className="mr-2" />
+                  画像を生成する
+                </>
+                )}
+              </Button>
+            ) : 
+            (
+              // このボタン自体はログイン画面を表示するボタン（未ログイン時はログイン画面をだし、仮にログインしていたら、無視される）
+              // 通常ログインしていたら、isSignedIn=trueの方に入るので以下の画面には辿りつかない
+              <SignInButton>
+                <Button className="w-full">
+                  <ImageIcon className="mr-2">
+                    ログインして画像を生成  
+                  </ImageIcon>
+                </Button>
+              </SignInButton>
+            )
+          }
+
         </form>
       </div>
       {/* イメージプレビュー */}
