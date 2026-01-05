@@ -7,9 +7,10 @@ import { useActionState, useEffect } from "react"
 import { createStripeSession } from "@/actions/stripe"
 import { toast } from "sonner"
 import LoadingOverlay from "@/components/utility/loading-overlay"
+import { StripeState } from "@/types/actions"
 
 
-const initialState = {
+const initialState: StripeState = {
   status: "idle",
   error: "",
 }
