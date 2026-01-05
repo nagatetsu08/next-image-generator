@@ -1,10 +1,9 @@
 import { PlanItem } from "@/types/plans";
-import { Crown, Rocket, Sparkles } from "lucide-react";
 
 export const plans: PlanItem[] = [
     {
         name: "Starter",
-        icon: Sparkles,
+        iconName: "sparkles",
         price: "¥1,000",
         description: "個人利用に最適なエントリープラン",
         features: [
@@ -17,7 +16,7 @@ export const plans: PlanItem[] = [
     },
     {
         name: "Pro",
-        icon: Rocket,
+        iconName: "rocket",
         price: "¥2,000",
         description: "プロフェッショナルな制作活動に",
         features: [
@@ -32,7 +31,7 @@ export const plans: PlanItem[] = [
     },
     {
         name: "Enterprise",
-        icon: Crown,
+        iconName: "crown",
         price: "¥5,000",
         description: "ビジネス向けのソリューション",
         features: [
