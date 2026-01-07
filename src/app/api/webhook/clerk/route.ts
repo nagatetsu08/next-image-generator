@@ -2,6 +2,10 @@ import { createUser, deleteUser, updateUser } from '@/lib/users'
 import { verifyWebhook } from '@clerk/nextjs/webhooks'
 import { NextRequest, NextResponse } from 'next/server'
 
+// 関数名をもっとわかりやすいものに変えた方がよいのでは？と思ったけど、このネーミングルールはNext.jsで厳格に決まっている。（変えたらエラーになる）
+// 必ずHTTPメソッドに基づいた名前でないとだめ。
+// なので、例えば同じuserに関するPost処理でもcreateとdeleteというapiエンドポイントを用意する場合、ディレクトリ階層で分ける。（/user/create/route.ts、/user/delte/route.ts）
+// route.tsの中で複数メソッド作ったりしないのが基本だが、パラメータを受けとり、その値を下にcaseで内部メソッドを呼ぶのはあり。
 export async function POST(req: NextRequest) {
   try {
     const evt = await verifyWebhook(req)

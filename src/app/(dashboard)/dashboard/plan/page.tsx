@@ -1,6 +1,8 @@
 import { plans } from '@/config/plans'
 import PlanCard from '@/components/dashboard/plan/plan'
 
+// Todo:サブスク購入した人はこの画面ではなく管理画面にリダイレクトするようにしたい。（useEffectを使って）
+
 const Plan = () => {
   return (
     // タイトル

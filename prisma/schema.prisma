@@ -17,22 +17,28 @@ model User {
   subscriptionStatus SubscriptionStatus @default(FREE)
   created_at         DateTime           @default(now())
   updated_at         DateTime           @default(now())
-  subscriptions      Subscription?
+  subscriptions      Subscription[]
 }
 
+// 教材の定義とは異なる定義に変更（1対多）。
+// 実務的に言うと、DB側にも履歴を持ちたい。アップグレード、ダウングレード双方に対応
+// アップグレードは即座にアップグレードプランを使えるようにしたいし、ダウングレードは月内はダウングレード前、その後ダウングレード後のやつを参照するという使い方にしたい。
 model Subscription {
   id                     String   @id @default(uuid())
-  userId                 String   @unique
-  stripeSubscriptionId   String   @unique
+  userId                 String
+  stripeSubscriptionId   String
   stripePriceId          String
   stripeCurrentPeriodEnd DateTime
   created_at             DateTime @default(now())
   updated_at             DateTime @default(now())
   user                   User     @relation(fields: [userId], references: [id])
+
+  @@index([userId]) // 教材と違ってユニークじゃなくなったから検索パフォーマンス向上のため付与。（ユニークの場合はデフォルトで作成されるからいらない）
 }
 
 enum SubscriptionStatus {
   FREE
-  BASIC
-  PRODUCTION
+  STARTER
+  PRO
+  ENTERPRISE
 }

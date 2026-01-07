@@ -3,6 +3,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { Loader2, Lock } from "lucide-react";
 import { Suspense } from "react";
 
+// Todo
+// 月内のアップグレード/ダウングレードに対応させたい(具体的には今月何プラン、来月何プランってのを表示させたい)
 
 // fallback用のコンポーネント
 const CreditSkeleton = () => (

@@ -65,6 +65,10 @@ export async function createStripeSession(prevState: StripeState, formData: Form
       mode: 'subscription',
       success_url: `${process.env.BASE_URL}/dashboard?success=true`,
       cancel_url: `${process.env.BASE_URL}/dashboard/plan?cancel=true`, //サンプルコードにはないけど、やっておいた方がよいので実装
+      // checkout用sessionにもmetadataを付与しとかないと、clerkIdによる更新ができない。
+      metadata: {
+        clerkId: user.id
+      }
     });
 
     checkoutUrl = session.url;
