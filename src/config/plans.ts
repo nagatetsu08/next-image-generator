@@ -1,5 +1,11 @@
 import { PlanItem } from "@/types/plans";
 
+export const STRIPE_PLANS = {
+    STARTER: "price_1Slu3tRuXneiB2t3KYQhKyJV",
+    Pro: "price_1Slu4IRuXneiB2t3dDPNmieO",
+    Enterprise: "price_1Slu4gRuXneiB2t3t59tniKm"
+}
+
 export const plans: PlanItem[] = [
     {
         name: "Starter",
@@ -12,7 +18,7 @@ export const plans: PlanItem[] = [
             "メールサポート"
         ],
         buttonText: "Starterプランを選択",
-        priceId: "price_1Slu3tRuXneiB2t3KYQhKyJV"
+        priceId: STRIPE_PLANS.STARTER
     },
     {
         name: "Pro",
@@ -26,7 +32,7 @@ export const plans: PlanItem[] = [
             "メールサポート"
         ],
         buttonText: "Proプランを選択",
-        priceId: "price_1Slu4IRuXneiB2t3dDPNmieO",
+        priceId: STRIPE_PLANS.Pro,
         recommend: true
     },
     {
@@ -41,7 +47,7 @@ export const plans: PlanItem[] = [
             "メールサポート"
         ],
         buttonText: "Enterpriseプランを選択",
-        priceId: "price_1Slu4gRuXneiB2t3t59tniKm"
+        priceId: STRIPE_PLANS.Enterprise
     }
 ]
 

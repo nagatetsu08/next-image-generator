@@ -21,7 +21,6 @@ export async function getUserCredits() {
           credits: true,
         }
       });
-
       return dbUser?.credits ?? 0;
       
     } catch(error) {

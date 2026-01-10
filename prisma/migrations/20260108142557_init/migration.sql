@@ -5,7 +5,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `stripCustomerId` VARCHAR(191) NULL,
     `credits` INTEGER NOT NULL DEFAULT 5,
-    `subscriptionStatus` ENUM('FREE', 'BASIC', 'PRODUCTION') NOT NULL DEFAULT 'FREE',
+    `subscriptionStatus` ENUM('FREE', 'STARTER', 'PRO', 'ENTERPRISE') NOT NULL DEFAULT 'FREE',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -27,8 +27,6 @@ CREATE TABLE `Subscription` (
 
     UNIQUE INDEX `Subscription_userId_key`(`userId`),
     UNIQUE INDEX `Subscription_stripeSubscriptionId_key`(`stripeSubscriptionId`),
+    INDEX `Subscription_userId_idx`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `Subscription` ADD CONSTRAINT `Subscription_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
